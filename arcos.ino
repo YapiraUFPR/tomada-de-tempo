@@ -47,7 +47,7 @@ LINE_STATE startTrs(bool rst_btn_state, bool start_line_state)
     }
     if (start_line_state == 1)
     {
-        start_timestamp = millis();
+        start_timestamp = millis() / 1000;
         return COUNTING;
     }   
     
@@ -70,7 +70,7 @@ LINE_STATE countTrs(bool finish_line_state, bool rst_btn_state)
         return FINISH;
     }
     
-    time_elapsed = millis() - start_timestamp;
+    time_elapsed = (millis() / 1000) - start_timestamp;
 
     lcd.setCursor(0, 0);
     lcd.print("COUNTING");
@@ -137,4 +137,4 @@ void loop() {
     }
 
     delay(60);
-}
+}                                
