@@ -2,19 +2,22 @@
 #include <LiquidCrystal.h>
 
 // start line sensors pins
-const int sl_ul_tpin = 7
-const int sl_ul_epin = 7;
-const int sl_ur_tpin = 8;
-const int sl_ur_epin = 8;
+const int sl_ul_tpin = 2
+const int sl_ul_epin = 3;
+const int sl_ur_tpin = 4;
+const int sl_ur_epin = 5;
 
 // finish line sensors pins
-const int fl_ul_tpin = 9;
-const int fl_ul_epin = 9;
-const int fl_ur_tpin = 10;
-const int fl_ur_epin = 10;
+const int fl_ul_tpin = 6;
+const int fl_ul_epin = 7;
+const int fl_ur_tpin = 8;
+const int fl_ur_epin = 9;
 
 // reset button pin
-const int rst_btn_pin = 11;
+const int rst_btn_pin = 10;
+
+// lcd pins
+const int rs = 11, en = 12, d4 = 13, d5 = 14, d6 = 15, d7 = 16;
 
 // threshold for the ultrassonic sensors reading
 const int US_THRSH = 50;
