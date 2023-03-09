@@ -20,7 +20,7 @@ const int rst_btn_pin = 13;
 const int rs = 11, en = 12, d4 = 13, d5 = 14, d6 = 15, d7 = 16;
 
 // threshold for the ultrassonic sensors reading
-const int US_THRSH = 50;
+const int US_THRSH = 1;
 
 // code state
 enum LINE_STATE {INIT, START, COUNTING, FINISH};
@@ -38,13 +38,15 @@ unsigned int time_elapsed = 0;
 
 LINE_STATE initTrs(bool rst_btn_state)
 {
-    if (rst_btn_state == 1)
+    if (rst_btn_state)
     {
         return START;
     }
 
     lcd.setCursor(0, 0);
     lcd.print("STANDBY");
+    
+    //Serial.println("STANDBY");
 
     return INIT;
 }
@@ -52,11 +54,11 @@ LINE_STATE initTrs(bool rst_btn_state)
 
 LINE_STATE startTrs(bool rst_btn_state, bool start_line_state)
 {
-    if (rst_btn_state == 1)
+    if (rst_btn_state)
     {
         return INIT; 
     }
-    if (start_line_state == 1)
+    if (start_line_state)
     {
         start_timestamp = millis() / 1000;
         return COUNTING;
@@ -67,16 +69,20 @@ LINE_STATE startTrs(bool rst_btn_state, bool start_line_state)
     lcd.print("READY");
     lcd.setCursor(0, 1);
     lcd.print(time_elapsed);
+
+    // Serial.print("READY ");
+    // Serial.println(time_elapsed);
+
     return START;
 }
 
 LINE_STATE countTrs(bool finish_line_state, bool rst_btn_state)
 {
-    if (rst_btn_state == 1)
+    if (rst_btn_state)
     {
         return INIT; 
     }
-    if (finish_line_state == 1)
+    if (finish_line_state)
     {
         return FINISH;
     }
@@ -88,6 +94,9 @@ LINE_STATE countTrs(bool finish_line_state, bool rst_btn_state)
     lcd.setCursor(0, 1);
     lcd.print(time_elapsed);
     
+    // Serial.print("COUNTING ");
+    // Serial.println(time_elapsed);
+
     return COUNTING;
 }
 
@@ -103,6 +112,9 @@ LINE_STATE finishTrs(bool rst_btn_state)
     lcd.print("FINISHED");
     lcd.setCursor(0, 1);
     lcd.print(time_elapsed);
+
+    // Serial.print("FINISHED ");
+    // Serial.println(time_elapsed);
 
     return FINISH;
 }
@@ -123,13 +135,13 @@ bool checkArc(float right_dist, float left_dist)
     return (((right_dist != 0) &&  (right_dist < US_THRSH)) || ((left_dist != 0) && (left_dist < US_THRSH)));
 }
 
-void setup() {
+void setup(void) {
     pinMode(rst_btn_pin, INPUT);
-
     lcd.begin(16, 2);
+    // Serial.begin(9600);
 }
 
-void loop() {
+void loop(void) {
 
     bool rst_btn_state = checkBtn();
 
