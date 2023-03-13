@@ -1,8 +1,8 @@
-#include <HCSR04>
+#include <HCSR04.h>
 #include <LiquidCrystal.h>
 
 // start line sensors pins
-const int sl_ul_tpin = 2
+const int sl_ul_tpin = 2;
 const int sl_ul_epin = 3;
 const int sl_ur_tpin = 4;
 const int sl_ur_epin = 5;
