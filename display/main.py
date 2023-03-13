@@ -25,7 +25,7 @@ def main():
     try:
         sensors = Serial(PORT, BAUD_RATE, timeout=0) # sensor readings(0)
     except Exception:
-        print(f"Coudn't stabilish connecting to port {PORT}")
+        print(f"Couldn't stabilish connecting to port {PORT}")
         return
 
     arc = TimingArc(10)  # timer
