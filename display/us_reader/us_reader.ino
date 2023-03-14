@@ -1,12 +1,14 @@
 #include <HCSR04.h>
 
+const int threshhold = 10;
+
 // start line sensors pins
 const int sl_tpin = 2;
 const int sl_epin = 3;
 
 // finish line sensors pins
-const int fl_tpin = 6;
-const int fl_epin = 7;
+const int fl_tpin = 4;
+const int fl_epin = 5;
 
 //initialisation class HCSR04 (trig pin , echo pin)
 HCSR04 slu(sl_tpin, sl_epin);
@@ -19,8 +21,11 @@ void setup(void)
 
 void loop(void)
 {
-    char buffer[20];
-    sprintf(buffer, "%f %f\n", slu.dist(), flu.dist());
-    Serial.print(buffer);
-    delay(60);
+    if (slu.dist() < threshhold)
+    {
+      Serial.println("S");
+    } else if (flu.dist() < threshhold)
+    {
+      Serial.println("F");
+    }
 }

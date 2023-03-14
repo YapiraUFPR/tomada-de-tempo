@@ -1,10 +1,14 @@
 import PySimpleGUI as sg
-from arcs import TimingArc
+from arcs import TimingArc, fakeReading
 from serial import Serial
+from time import sleep
+
+FPS = 60
 
 # arduino port settings
-PORT = "/dev/ttyUSB0"
+PORT = "/dev/ttyACM0"
 BAUD_RATE = 9600
+TIMEOUT = 0.05
 
 def main():
     # window layout
@@ -23,21 +27,25 @@ def main():
     #window.Maximize()
     
     try:
-        sensors = Serial(PORT, BAUD_RATE, timeout=0) # sensor readings(0)
+        sensors = Serial(PORT, BAUD_RATE, timeout=0.05) # sensor readings(0)
     except Exception:
         print(f"Couldn't stabilish connecting to port {PORT}")
         return
 
-    arc = TimingArc(10)  # timer
-    while not sensors.closed:
-        event, _ = window.read(30)
+    arc = TimingArc()  # timer
+    while True:
+        event, _ = window.read(1000/FPS)
 
         # process sensor and button values to update timer
-        us_reading = sensors.readline()
-        slu, flu = us_reading.split(" ") # start line and finish line sensors
+        us_reading = sensors.readline().decode().strip()
+        #us_reading = fakeReading()
+
+        slu = (us_reading == 'S')
+        flu = (us_reading == 'F')
+
         bgn = (event == "-BGN-")
         rst = (event == "-RST-")
-        arc.update([float(slu)], [float(flu)], bgn, rst)
+        arc.update(slu, flu, bgn, rst)
 
         # update timestamp infos
         ts = arc.getTimeElaps()
@@ -48,12 +56,13 @@ def main():
         cts = arc.cts + 1
         window[f"-TS{cts}-"].update(text_color = "yellow")
 
-        print(ts) # for failsafe
 
         # close the window correctly
         if event == sg.WINDOW_CLOSED:
             break
 
+    
+    sensors.close()
     window.close()
 
 try:

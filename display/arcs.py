@@ -12,9 +12,7 @@ class TimingArc:
         TIMING = 2
         FINISHED = 3
 
-    def __init__(self, treshhold):
-        self.treshhold = treshhold
-
+    def __init__(self):
         self.state = self.LineState.STANDBY
         self.start_ts = [0, 0, 0]
         self.time_elaps = [0, 0, 0]
@@ -34,25 +32,23 @@ class TimingArc:
 
         return self.LineState.STANDBY
 
-    def __startTrs__(self, slus, ctn):
+    def __startTrs__(self, slu, ctn):
         if ctn:
             return self.LineState.FINISHED
 
-        for slu in slus:
-            if (slu != 0) and (slu < self.treshhold):
-                self.start_ts[self.cts] = time_ns()
-                return self.LineState.TIMING
+        if slu:
+            self.start_ts[self.cts] = time_ns()
+            return self.LineState.TIMING
 
         return self.LineState.READY
     
-    def __countTrs__(self, flus, ctn):
+    def __countTrs__(self, flu, ctn):
         if ctn:
             return self.LineState.FINISHED
 
-        for flu in flus:
-            if (flu != 0) and (flu < self.treshhold):
-                self.start_ts[self.cts] = 0
-                return self.LineState.FINISHED
+        if flu:
+            self.start_ts[self.cts] = 0
+            return self.LineState.FINISHED
 
         self.time_elaps[self.cts] = time_ns() - self.start_ts[self.cts]
         return self.LineState.TIMING
@@ -66,7 +62,7 @@ class TimingArc:
 
         return self.LineState.FINISHED
     
-    def update(self, slus , flus, cnt=True, reset=False):
+    def update(self, slu , flu, cnt=True, reset=False):
         """Make the state transitions"""
         if reset:
             self.__fullReset__()
@@ -76,9 +72,9 @@ class TimingArc:
             case self.LineState.STANDBY:
                 self.state = self.__initTrs__(cnt)
             case self.LineState.READY:
-                self.state = self.__startTrs__(slus, cnt)
+                self.state = self.__startTrs__(slu, cnt)
             case self.LineState.TIMING:
-                self.state = self.__countTrs__(flus, cnt)
+                self.state = self.__countTrs__(flu, cnt)
             case self.LineState.FINISHED:
                 self.state = self.__finishTrs__(cnt)
 
@@ -105,9 +101,9 @@ def fakeReading():
     """Generate a fake sensor reading, just for tests"""
     rand = randrange(1, 10000)
     if rand <= 500:
-        return "5.1 23.1"
+        return "S"
     
     if rand >= 9995:
-        return "22.3 5.2"
+        return "F"
 
-    return "22.3 23.1"
+    return ""
