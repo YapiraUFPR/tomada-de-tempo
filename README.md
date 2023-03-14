@@ -34,6 +34,7 @@
 ## Authors
 * Gabriel de Oliveira Pontarolo
 * Rian Marcos Sepulveda
+* Seijiro Mizuno
 
 ## Special Thanks
 * Luan Matheus Trindade Dalmazo
