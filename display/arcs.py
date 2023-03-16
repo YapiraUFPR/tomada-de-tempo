@@ -68,15 +68,14 @@ class TimingArc:
             self.__fullReset__()
             return
 
-        match self.state:
-            case self.LineState.STANDBY:
-                self.state = self.__initTrs__(cnt)
-            case self.LineState.READY:
-                self.state = self.__startTrs__(slu, cnt)
-            case self.LineState.TIMING:
-                self.state = self.__countTrs__(flu, cnt)
-            case self.LineState.FINISHED:
-                self.state = self.__finishTrs__(cnt)
+        if self.state == self.LineState.STANDBY:
+            self.state = self.__initTrs__(cnt)
+        elif self.state == self.LineState.READY:
+            self.state = self.__startTrs__(slu, cnt)
+        elif self.state == self.LineState.TIMING:
+            self.state = self.__countTrs__(flu, cnt)
+        elif self.state == self.LineState.FINISHED:
+            self.state = self.__finishTrs__(cnt)
 
     def getTimeElaps(self):
         """Convert the timestamps to a printable format 'MIN:SEC:MILLIS'"""

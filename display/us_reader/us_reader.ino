@@ -21,10 +21,10 @@ void setup(void)
 
 void loop(void)
 {
-    if (slu.dist() < threshhold)
+    if ((slu.dist() != 0) && (slu.dist() < threshhold))
     {
       Serial.println("S");
-    } else if (flu.dist() < threshhold)
+    } else if ((flu.dist() != 0) && (flu.dist() < threshhold))
     {
       Serial.println("F");
     }
