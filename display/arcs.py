@@ -1,6 +1,7 @@
 from enum import Enum
 from time import time_ns
 from random import randrange
+import logging
 
 class TimingArc:
     """A state machine that does the timekeeping for the line follower course.\n
@@ -17,6 +18,7 @@ class TimingArc:
         self.start_ts = [0, 0, 0]
         self.time_elaps = [0, 0, 0]
         self.cts = 0
+        logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO, filename="logs.bin")
 
     def __fullReset__(self):
         self.cts = 0
@@ -44,10 +46,12 @@ class TimingArc:
     
     def __countTrs__(self, flu, ctn):
         if ctn:
+            logging.info(f"INVALID:{self.cts+1}:{self.getTimeElaps()}")
             return self.LineState.FINISHED
 
         if flu:
             self.start_ts[self.cts] = 0
+            logging.info(f"VALID:{self.cts+1}:{self.getTimeElaps()}")
             return self.LineState.FINISHED
 
         self.time_elaps[self.cts] = time_ns() - self.start_ts[self.cts]
