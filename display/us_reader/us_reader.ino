@@ -3,12 +3,12 @@
 const int threshhold = 10;
 
 // start line sensors pins
-const int sl_tpin = 2;
-const int sl_epin = 3;
+const int sl_tpin = 3;
+const int sl_epin = 4;
 
 // finish line sensors pins
-const int fl_tpin = 4;
-const int fl_epin = 5;
+const int fl_tpin = 5;
+const int fl_epin = 6;
 
 //initialisation class HCSR04 (trig pin , echo pin)
 HCSR04 slu(sl_tpin, sl_epin);
@@ -21,10 +21,13 @@ void setup(void)
 
 void loop(void)
 {
-    if ((slu.dist() != 0) && (slu.dist() < threshhold))
+    int sensorDist = slu.dist();
+    int sensorDist2 = flu.dist();
+
+    if ((sensorDist != 0) && (sensorDist < threshhold))
     {
       Serial.println("S");
-    } else if ((flu.dist() != 0) && (flu.dist() < threshhold))
+    } else if ((sensorDist2 != 0) && (sensorDist2 < threshhold))
     {
       Serial.println("F");
     }

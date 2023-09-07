@@ -6,14 +6,14 @@ from time import sleep
 FPS = 60
 
 # arduino port settings
-PORT = "/dev/ttyACM0"
+PORT = "/dev/ttyUSB1"
 BAUD_RATE = 9600
 TIMEOUT = 0.05
 
 def main():
     # window layout
     sg.theme("DarkGrey2")
-    ts_font = ("Digital-7", 200)
+    ts_font = ("Digital-7", 100)
     ts_size = (13, 2)
     btn_font = ("Roboto Black", 60)
     state_font = ("Osmanya", 60)
