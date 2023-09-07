@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <VL53L0X.h>
 
-const int threshhold = 10; // centimeters
+const int threshhold = 100; // centimeters
 
 // xshut pins
 const int sl_xpin = 12;
@@ -41,14 +41,20 @@ void setup(void)
 
 void loop(void)
 {
-    int s_dist = sIr.readRangeContinuousMillimeters()*1000;
-    int f_dist = fIr.readRangeContinuousMillimeters()*1000;
+    int s_dist = sIr.readRangeContinuousMillimeters();
+    int f_dist = fIr.readRangeContinuousMillimeters();
+
+    // Serial.println(s_dist);
+    // Serial.println(f_dist);
 
     if ((s_dist != 0) && (s_dist < threshhold))
     {
       Serial.println("S");
-    } else if ((f_dist != 0) && (f_dist < threshhold))
+    }
+    if ((f_dist != 0) && (f_dist < threshhold))
     {
       Serial.println("F");
     }
+
+    delay(10);
 }
