@@ -11,6 +11,8 @@ const int fl_xpin = 10;
 const int sl_addr = 42;
 const int fl_addr = 43;
 
+long delta = 0;
+
 VL53L0X sIr;
 VL53L0X fIr;
 
@@ -47,13 +49,13 @@ void loop(void)
     // Serial.println(s_dist);
     // Serial.println(f_dist);
 
-    if ((s_dist != 0) && (s_dist < threshhold))
+    if ((s_dist > 0) && (s_dist < threshhold))
     {
-      Serial.println("S");
+      Serial.println("START");
     }
-    if ((f_dist != 0) && (f_dist < threshhold))
+    if ((f_dist > 0) && (f_dist < threshhold))
     {
-      Serial.println("F");
+      Serial.println("FINISHED");
     }
 
     delay(10);

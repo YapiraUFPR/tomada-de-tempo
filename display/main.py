@@ -6,7 +6,7 @@ from time import sleep
 FPS = 60
 
 # arduino port settings
-PORT = "/dev/ttyUSB1"
+PORT = "/dev/ttyUSB0"
 BAUD_RATE = 9600
 TIMEOUT = 0.05
 
@@ -40,8 +40,8 @@ def main():
         us_reading = sensors.readline().decode().strip()
         #us_reading = fakeReading()
 
-        slu = (us_reading == 'S')
-        flu = (us_reading == 'F')
+        slu = (us_reading == 'START')
+        flu = (us_reading == 'FINISHED')
 
         bgn = (event == "-BGN-")
         rst = (event == "-RST-")
